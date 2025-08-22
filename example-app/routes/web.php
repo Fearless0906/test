@@ -26,7 +26,7 @@ Route::prefix('api')->group(function () {
     Route::post('/users', [UserController::class, 'store'])->name('api.users.store');
     Route::get('/users/{id}', [UserController::class, 'show'])->name('api.users.show');
     Route::put('/users/{id}', [UserController::class, 'update'])->name('api.users.update');
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('api.users.destroy');
+    Route::delete('/users/{id}/delete', [UserController::class, 'destroy'])->name('api.users.destroy');
 });
 
 require __DIR__.'/auth.php';

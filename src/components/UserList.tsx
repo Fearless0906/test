@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../axios";
-import { isAxiosError } from "axios";
 import type { User } from "../types";
 
 const UserList: React.FC = () => {
@@ -26,37 +25,37 @@ const UserList: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const handleDelete = async (userId: number) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        console.log("Attempting to delete user:", userId);
-        const response = await axios.delete(`/api/users/${userId}`);
-        console.log("Delete response:", response);
+  // const handleDelete = async (userId: number) => {
+  //   if (window.confirm("Are you sure you want to delete this user?")) {
+  //     try {
+  //       console.log("Attempting to delete user:", userId);
+  //       const response = await axios.delete(`/api/users/${userId}`);
+  //       console.log("Delete response:", response);
 
-        if (response.status === 200) {
-          console.log("Delete successful, updating UI");
-          setUsers((prevUsers) =>
-            prevUsers.filter((user) => user.id !== userId)
-          );
-        } else {
-          throw new Error(`Unexpected status: ${response.status}`);
-        }
-      } catch (error) {
-        console.error("Error deleting user:", error);
-        if (isAxiosError(error)) {
-          console.error("Axios error details:", {
-            status: error.response?.status,
-            data: error.response?.data,
-            headers: error.response?.headers,
-          });
-          alert(error.response?.data?.message || "Failed to delete user");
-        } else {
-          console.error("Non-Axios error:", error);
-          alert("Failed to delete user");
-        }
-      }
-    }
-  };
+  //       if (response.status === 200) {
+  //         console.log("Delete successful, updating UI");
+  //         setUsers((prevUsers) =>
+  //           prevUsers.filter((user) => user.id !== userId)
+  //         );
+  //       } else {
+  //         throw new Error(`Unexpected status: ${response.status}`);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error deleting user:", error);
+  //       if (isAxiosError(error)) {
+  //         console.error("Axios error details:", {
+  //           status: error.response?.status,
+  //           data: error.response?.data,
+  //           headers: error.response?.headers,
+  //         });
+  //         alert(error.response?.data?.message || "Failed to delete user");
+  //       } else {
+  //         console.error("Non-Axios error:", error);
+  //         alert("Failed to delete user");
+  //       }
+  //     }
+  //   }
+  // };
 
   if (loading) {
     return <div className="text-center py-8">Loading...</div>;
@@ -119,12 +118,12 @@ const UserList: React.FC = () => {
                   >
                     Edit
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => handleDelete(user.id)}
                     className="text-red-600 hover:text-red-900"
                   >
                     Delete
-                  </button>
+                  </button> */}
                 </td>
               </tr>
             ))}

@@ -4,7 +4,17 @@ import { isAxiosError } from "axios";
 import type { Role, UserFormData } from "../types";
 import { useNavigate } from "react-router-dom";
 
-const UserForm: React.FC = () => {
+interface UserFormProps {
+  initialData?: UserFormData;
+  onSubmit: (data: UserFormData) => Promise<void>;
+  submitButtonText: string;
+}
+
+const UserForm: React.FC<UserFormProps> = ({
+  initialData,
+  onSubmit,
+  submitButtonText,
+}) => {
   const [roles, setRoles] = useState<Role[]>([]);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<UserFormData>({
@@ -31,13 +41,18 @@ const UserForm: React.FC = () => {
     fetchRoles();
   }, []);
 
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
+    }
+  }, [initialData]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
 
     try {
-      await axios.post("/api/users", formData);
-      navigate("/users");
+      await onSubmit(formData);
     } catch (error: unknown) {
       if (isAxiosError(error) && error.response?.data?.errors) {
         setErrors(error.response.data.errors);
@@ -153,7 +168,7 @@ const UserForm: React.FC = () => {
                   type="submit"
                   className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
                 >
-                  Create User
+                  {submitButtonText}
                 </button>
               </div>
             </div>

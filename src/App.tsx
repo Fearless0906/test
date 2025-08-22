@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import UserForm from "./components/UserForm";
 import UserList from "./components/UserList";
+import UserFormContainer from "./components/UserFormContainer";
 import "./App.css";
 
 function App() {
@@ -24,8 +24,16 @@ function App() {
         </nav>
 
         <Routes>
-          <Route path="/" element={<UserForm />} />
+          <Route path="/" element={<UserFormContainer mode="create" />} />
           <Route path="/users" element={<UserList />} />
+          <Route
+            path="/users/create"
+            element={<UserFormContainer mode="create" />}
+          />
+          <Route
+            path="/users/:id/edit"
+            element={<UserFormContainer mode="edit" />}
+          />
         </Routes>
       </div>
     </Router>

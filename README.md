@@ -1,6 +1,84 @@
 # User Management System
 
-A full-stack application built with Laravel and React + TypeScript for managing users and roles.
+A full-stack application built with Laravel and React + TypeScript for managing users and roles, following PSR and SOLID principles.
+
+## Code Standards & Architecture
+
+### PSR (PHP Standards Recommendations)
+
+The Laravel backend follows these PSR standards:
+
+- **PSR-1**: Basic Coding Standard
+  - Files use only `<?php` and `<?=` tags
+  - Files use only UTF-8 without BOM for PHP code
+  - Class names declared in `StudlyCaps`
+  - Class constants declared in all upper case
+  - Method names declared in `camelCase`
+
+- **PSR-12**: Extended Coding Style
+  - 4 spaces used for indentation
+  - Lines limited to 80-120 characters
+  - One blank line after namespace declarations
+  - Opening braces for classes on new line
+  - Opening braces for methods on new line
+  - Visibility declared on all properties and methods
+  - All files end with a new line character
+
+- **PSR-4**: Autoloading Standard
+  - Classes autoloaded following the `App\` namespace
+  - Directory structure matches namespace structure
+  - Composer used for autoloading configuration
+
+### SOLID Principles
+
+The application follows SOLID principles:
+
+1. **Single Responsibility Principle (SRP)**
+   - Each class has one specific purpose
+   - Controllers handle HTTP requests only
+   - Business logic moved to dedicated services
+   - Repository pattern used for data access
+
+2. **Open-Closed Principle (OCP)**
+   - Classes are open for extension but closed for modification
+   - Base classes and interfaces used for common functionality
+   - Behavior extended through inheritance and composition
+
+3. **Liskov Substitution Principle (LSP)**
+   - All derived classes can substitute their base classes
+   - Interfaces properly abstracted and implemented
+   - Type-hinting used for dependencies
+
+4. **Interface Segregation Principle (ISP)**
+   - Small, focused interfaces instead of large, monolithic ones
+   - Clients only depend on methods they use
+   - Role-specific interfaces for different behaviors
+
+5. **Dependency Inversion Principle (DIP)**
+   - High-level modules don't depend on low-level modules
+   - Dependencies injected via constructor injection
+   - Interfaces used for decoupling
+
+### Project Architecture
+
+```
+example-app/
+├── app/
+│   ├── Contracts/           # Interfaces
+│   ├── Services/           # Business logic services
+│   ├── Repositories/       # Data access layer
+│   ├── Http/
+│   │   ├── Controllers/    # Thin controllers
+│   │   ├── Requests/      # Form requests for validation
+│   │   ├── Resources/     # API resources
+│   │   └── Middleware/    # HTTP middleware
+│   ├── Models/            # Eloquent models
+│   ├── Exceptions/        # Custom exceptions
+│   └── Providers/         # Service providers
+└── tests/
+    ├── Unit/              # Unit tests
+    └── Feature/           # Feature tests
+```
 
 ## Prerequisites
 

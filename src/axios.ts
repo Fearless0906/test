@@ -21,17 +21,17 @@ const getCookie = (name: string): string | null => {
 // Initialize CSRF protection
 const initCSRF = async () => {
   try {
-    // First get CSRF cookie if we don't have it
-    if (!getCookie("XSRF-TOKEN")) {
-      await instance.get("/sanctum/csrf-cookie");
-    }
-    // Update meta tag with the new token
-    const token = getCookie("XSRF-TOKEN");
+    // Get CSRF token from our endpoint
+    const response = await instance.get("/api/csrf-token");
+    const { token } = response.data;
+
     if (token) {
-      const decodedToken = decodeURIComponent(token);
+      // Set the token in a cookie
+      document.cookie = `XSRF-TOKEN=${token}; path=/`;
+      // Update meta tag
       document
         .querySelector('meta[name="csrf-token"]')
-        ?.setAttribute("content", decodedToken);
+        ?.setAttribute("content", token);
     }
   } catch (error) {
     console.error("Error initializing CSRF protection:", error);

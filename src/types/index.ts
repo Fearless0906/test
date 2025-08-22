@@ -4,10 +4,12 @@ export interface Role {
 }
 
 export interface User {
-  id?: number;
+  id: number;
   full_name: string;
   email: string;
   roles: Role[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface UserFormData {

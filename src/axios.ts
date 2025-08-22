@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost", // Using default Laravel Sail URL
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost", // Use env variable with fallback
   withCredentials: true,
   headers: {
     "X-Requested-With": "XMLHttpRequest",

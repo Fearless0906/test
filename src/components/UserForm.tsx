@@ -38,9 +38,13 @@ const UserForm: React.FC = () => {
     try {
       await axios.post("/api/users", formData);
       navigate("/users");
-    } catch (error: any) {
-      if (error.response?.data?.errors) {
+    } catch (error: unknown) {
+      if (isAxiosError(error) && error.response?.data?.errors) {
         setErrors(error.response.data.errors);
+      } else {
+        setErrors({
+          general: "An unexpected error occurred. Please try again.",
+        });
       }
     }
   };
@@ -130,6 +134,12 @@ const UserForm: React.FC = () => {
                   <p className="mt-1 text-sm text-red-600">{errors.roles}</p>
                 )}
               </div>
+
+              {errors.general && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <p className="text-sm text-red-700">{errors.general}</p>
+                </div>
+              )}
 
               <div className="flex items-center justify-between pt-4">
                 <button

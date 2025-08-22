@@ -23,9 +23,22 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'full_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'roles' => ['sometimes', 'array'],
-            'roles.*' => ['exists:roles,id']
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'roles' => ['required', 'array', 'min:1'],
+            'roles.*' => ['required', 'integer', 'exists:roles,id']
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     */
+    public function messages(): array
+    {
+        return [
+            'email.unique' => 'This email address is already in use.',
+            'roles.required' => 'Please select at least one role.',
+            'roles.min' => 'Please select at least one role.',
+            'roles.*.exists' => 'One or more selected roles are invalid.'
         ];
     }
 }

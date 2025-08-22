@@ -5,6 +5,11 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// CSRF Token route
+Route::get('/csrf-token', function () {
+    return response()->json(['token' => csrf_token()]);
+});
+
 Route::group(['middleware' => ['api']], function() {
     // Health check route
     Route::get('/', function () {

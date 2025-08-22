@@ -10,6 +10,29 @@ const instance = axios.create({
   },
 });
 
+// Add response interceptor for debugging
+instance.interceptors.response.use(
+  (response) => {
+    console.log("Response:", {
+      url: response.config.url,
+      method: response.config.method,
+      status: response.status,
+      data: response.data,
+    });
+    return response;
+  },
+  (error) => {
+    console.error("Request failed:", {
+      url: error.config?.url,
+      method: error.config?.method,
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+    });
+    return Promise.reject(error);
+  }
+);
+
 // Function to get CSRF token
 const getCookie = (name: string): string | null => {
   const value = `; ${document.cookie}`;

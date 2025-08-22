@@ -60,19 +60,31 @@ const UserFormContainer: React.FC<{ mode: "create" | "edit" }> = ({ mode }) => {
   const handleSubmit = async (data: UserFormData) => {
     try {
       if (mode === "edit" && id) {
-        await axios.put(`/api/users/${id}`, data);
+        const response = await axios.put(`/api/users/${id}`, data);
+        if (response.status === 200) {
+          navigate("/users");
+        }
       } else {
-        await axios.post("/api/users", data);
+        const response = await axios.post("/api/users", data);
+        if (response.status === 201) {
+          navigate("/users");
+        }
       }
-      navigate("/users");
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.response?.data?.errors) {
           throw error;
+        } else if (error.response?.status === 422) {
+          // Validation error
+          throw error;
         } else {
-          throw new Error("Failed to save user");
+          console.error("Server error:", error.response?.data);
+          throw new Error(
+            error.response?.data?.message || "Failed to save user"
+          );
         }
       }
+      console.error("Unexpected error:", error);
       throw new Error("An unexpected error occurred");
     }
   };
@@ -81,11 +93,6 @@ const UserFormContainer: React.FC<{ mode: "create" | "edit" }> = ({ mode }) => {
     <div className="min-h-screen bg-gray-100 py-8 px-4">
       <div className="max-w-2xl mx-auto">
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
-          <div className="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700">
-            <h1 className="text-2xl font-semibold text-white">
-              {mode === "edit" ? "Edit User" : "Create New User"}
-            </h1>
-          </div>
           <div className="p-6">
             <UserForm
               initialData={initialData}

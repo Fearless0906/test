@@ -1,0 +1,33 @@
+version: '3'
+services:
+  laravel.test:
+    build:
+      context: ./example-app
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    networks:
+      - sail
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: example-app
+      MYSQL_USER: sail
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    networks:
+      - sail
+
+  frontend:
+    build: ./test
+    ports:
+      - "5173:80"   # Vite build served by nginx
+    networks:
+      - sail
+
+networks:
+  sail:
+    driver: bridge

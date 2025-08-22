@@ -1,13 +1,175 @@
-# React + TypeScript + Vite
+# User Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack application built with Laravel and React + TypeScript for managing users and roles.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- PHP >= 8.2
+- Node.js >= 16
+- MySQL >= 8.0
+- Composer
+- npm or yarn
 
-## Expanding the ESLint configuration
+## Project Structure
+
+```
+/
+├── example-app/      # Laravel backend
+└── src/             # React frontend
+```
+
+## Backend Setup (Laravel)
+
+1. Navigate to the backend directory:
+```bash
+cd example-app
+```
+
+2. Install PHP dependencies:
+```bash
+composer install
+```
+
+3. Create a copy of the environment file:
+```bash
+cp .env.example .env
+```
+
+4. Configure your `.env` file with the following variables:
+```env
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=<your-app-key>
+APP_DEBUG=true
+APP_URL=http://localhost
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
+
+FRONTEND_URL=http://localhost:5173
+```
+
+5. Generate application key:
+```bash
+php artisan key:generate
+```
+
+6. Run database migrations and seed initial data:
+```bash
+php artisan migrate:fresh --seed
+```
+
+7. Start the Laravel development server:
+```bash
+php artisan serve
+```
+
+The backend API will be available at `http://localhost:8000`.
+
+## Frontend Setup (React + TypeScript)
+
+1. Navigate to the frontend directory (root directory):
+```bash
+cd ..
+```
+
+2. Install Node.js dependencies:
+```bash
+npm install
+```
+
+3. Create a `.env` file in the root directory:
+```bash
+cp .env.example .env
+```
+
+4. Configure your frontend `.env` with:
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+5. Start the Vite development server:
+```bash
+npm run dev
+```
+
+The frontend application will be available at `http://localhost:5173`.
+
+## API Endpoints
+
+The following API endpoints are available:
+
+- `GET /api/roles` - List all roles
+- `GET /api/users` - List all users
+- `POST /api/users` - Create a new user
+- `PUT /api/users/{id}` - Update a user
+- `DELETE /api/users/{id}` - Delete a user
+
+## Available Roles
+
+The following roles are seeded by default:
+
+1. Administrator - Full system access
+2. Editor - Can edit and manage content
+3. Author - Can create and manage own content
+4. Subscriber - Can view and interact with content
+
+## Development Notes
+
+### CORS Configuration
+
+The backend is configured to accept requests from the frontend running on `http://localhost:5173`. If you need to change this, update:
+
+1. `example-app/config/cors.php`:
+```php
+'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:5173')]
+```
+
+2. Update the `FRONTEND_URL` in your backend `.env` file.
+
+### API Authentication
+
+The application uses Laravel Sanctum for API authentication. CSRF protection is disabled for API routes.
+
+### Database
+
+The application uses MySQL by default. To use a different database:
+
+1. Update the `DB_CONNECTION` in your backend `.env` file
+2. Install the appropriate PHP database driver
+3. Update the database configuration in `config/database.php` if needed
+
+## Troubleshooting
+
+### Common Issues
+
+1. CORS errors
+   - Ensure both frontend and backend servers are running
+   - Check FRONTEND_URL in backend .env matches your frontend URL
+   - Verify VITE_API_URL in frontend .env matches your backend URL
+
+2. Database connection errors
+   - Verify MySQL is running
+   - Check database credentials in .env
+   - Ensure database exists
+
+3. API 500 errors
+   - Check Laravel logs in `example-app/storage/logs/laravel.log`
+   - Verify database migrations have run
+   - Ensure all required environment variables are set
+
+### Getting Help
+
+If you encounter any issues:
+
+1. Check the Laravel logs: `example-app/storage/logs/laravel.log`
+2. Check the Network tab in browser DevTools
+3. Verify all environment variables are set correctly
+4. Ensure all prerequisites are installed and up to date
 
 If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
